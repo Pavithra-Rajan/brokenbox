@@ -1,0 +1,18 @@
+[project]
+name = "brokenbox"
+version = "0.1.0"
+description = "Break-and-fix Linux troubleshooting labs in local KVM VMs"
+requires-python = ">=3.11"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = []
+
+[project.scripts]
+brokenbox = "brokenbox.cli:main"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["brokenbox"]
