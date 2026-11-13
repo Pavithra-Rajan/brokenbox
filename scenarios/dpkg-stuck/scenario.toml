@@ -1,0 +1,20 @@
+title = "dpkg stuck: could not get lock"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 15
+tags = ["packages"]
+description = """
+apt is stuck: every `apt install` fails with
+"Could not get lock /var/lib/dpkg/lock-frontend". Last time someone just deleted the lock files. Don't do that.
+
+Find out what is holding the lock and stop it for good (it's a leftover
+nightly-update job nobody needs any more). Then leave dpkg healthy: no
+half-installed packages.
+"""
+test = "Nothing holds the dpkg locks, the leftover job won't come back, the lock files are intact, and `dpkg --audit` is clean."
+inspired_by = [
+  "https://askubuntu.com/questions/15433/unable-to-lock-the-administration-directory-var-lib-dpkg-is-another-process",
+  "https://askubuntu.com/questions/1109982/e-could-not-get-lock-var-lib-dpkg-lock-frontend-open-11-resource-temporari",
+  "https://askubuntu.com/questions/163200/e-dpkg-was-interrupted-run-sudo-dpkg-configure-a",
+  "https://askubuntu.com/questions/219545/dpkg-error-dpkg-status-database-is-locked-by-another-process",
+]
