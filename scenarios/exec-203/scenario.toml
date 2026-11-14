@@ -1,0 +1,19 @@
+title = "status=203/EXEC: the service that won't start"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["systemd"]
+description = """
+The reporter service won't start: `systemctl start reporter` fails, and the
+status says code=exited, status=203/EXEC. A developer wrote the script on
+their laptop and copied it over.
+
+When it runs, it keeps /var/lib/reporter/heartbeat up to date. Make the
+service start now and at boot, without changing the unit's ExecStart.
+"""
+test = "reporter is active and enabled, ExecStart is unchanged, and the heartbeat file is updating."
+inspired_by = [
+  "https://unix.stackexchange.com/questions/472950/systemd-status-203-exec-error-when-creating-new-service",
+  "https://unix.stackexchange.com/questions/664811/systemd-service-failing-with-exit-code-status-203-exec",
+  "https://askubuntu.com/questions/730925/deluge-daemon-fails-to-start-on-ubuntu-15-systemd-error-code-exited-status-203",
+]
