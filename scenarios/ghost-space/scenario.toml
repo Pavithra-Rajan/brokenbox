@@ -1,0 +1,17 @@
+title = "Ghost space: the disk is full, but nothing is using it"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["disk"]
+description = """
+The root filesystem is 100% full and the shopfront web app (port 8080) is
+starting to fail. `du` can't find anything big.
+
+Free up the space without rebooting, and without stopping or restarting the
+shopfront service: its PID must stay the same.
+"""
+test = "More than 1 GB is free on /, shopfront answers on :8080, and its PID hasn't changed."
+inspired_by = [
+  "https://unix.stackexchange.com/questions/182077/best-way-to-free-disk-space-from-deleted-files-that-are-held-open",
+  "https://unix.stackexchange.com/questions/277387/tab-completion-errors-bash-cannot-create-temp-file-for-here-document-no-space",
+]
