@@ -1,0 +1,18 @@
+title = "Hosts hijack: the app talks to the wrong server"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["network"]
+description = """
+The checkout app's health check fails: `checkout-health` says the payments
+API at api.payments.internal answers 404. The payments team says their API
+is up, and that it moved to a new address last month.
+
+Make api.payments.internal reach the real payments API, in a way that
+survives a reboot. Don't change the checkout app's config.
+"""
+test = "`checkout-health` passes, and api.payments.internal will still resolve to the right place after a reboot."
+inspired_by = [
+  "https://serverfault.com/questions/65199/is-it-possible-to-alias-a-hostname-in-linux",
+  "https://askubuntu.com/questions/1068131/ubuntu-18-04-local-domain-dns-lookup-not-working",
+]
