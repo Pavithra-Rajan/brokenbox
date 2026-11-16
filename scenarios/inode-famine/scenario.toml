@@ -1,0 +1,23 @@
+title = "Inode famine: no space left on device, with plenty of space"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["disk"]
+description = """
+Nobody can log in to the shop. Its session writer (shop-sessions.service)
+keeps failing with "No space left on device" when it saves sessions to
+/var/lib/shop/sessions, yet `df -h` shows plenty of free space.
+
+Fix it:
+  1. Delete sessions older than 1 day. Keep the recent ones: people are
+     logged in with them.
+  2. Set up something that keeps deleting old sessions automatically
+     (a cron job, a systemd timer or a tmpfiles.d rule).
+"""
+test = "New sessions can be written, inode use is under 80%, recent sessions still exist, and an automatic cleanup is configured."
+inspired_by = [
+  "https://askubuntu.com/questions/919748/no-space-left-on-device-even-though-there-is",
+  "https://askubuntu.com/questions/1419651/mv-fails-with-no-space-left-on-device-when-the-destination-has-31-gb-of-space",
+  "https://unix.stackexchange.com/questions/222221/how-to-fix-intermittant-no-space-left-on-device-errors-during-mv-when-device-h",
+  "https://askubuntu.com/questions/668582/false-disk-full-error-apt-get-unable-to-install-or-remove",
+]
