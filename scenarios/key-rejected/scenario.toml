@@ -1,0 +1,19 @@
+title = "Key rejected: Permission denied (publickey)"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["access", "ssh"]
+description = """
+A new user, deploy, needs SSH access. Their public key was added to
+/home/deploy/.ssh/authorized_keys, but `ssh -i ~/deploy_key deploy@localhost`
+still fails with "Permission denied (publickey)".
+
+Let deploy log in with that key without making sshd's configuration any
+less strict. The private key is in admin's home: ~/deploy_key.
+"""
+test = "`ssh -i deploy_key deploy@localhost` works, and sshd's StrictModes is still on."
+inspired_by = [
+  "https://serverfault.com/questions/733718/permission-denied-on-authorized-keys",
+  "https://askubuntu.com/questions/900022/permission-denied-publickey-error-right-after-generating-the-ssh-keys",
+  "https://serverfault.com/questions/489887/ssh-login-using-public-private-key-exchange-authorized-keys-not-working",
+]
