@@ -1,0 +1,20 @@
+title = "chmod -R 777: PostgreSQL won't start"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["database", "permissions"]
+memory = 1024
+description = """
+Someone "fixed a permissions problem" with
+`chmod -R 777 /var/lib/postgresql`, and now PostgreSQL won't start.
+
+Get it running again with sane permissions: nothing under
+/var/lib/postgresql may be writable by group or others. The data in the
+`shop` database must survive.
+"""
+test = "PostgreSQL is running, the shop data is intact, and nothing under /var/lib/postgresql is group- or world-writable."
+inspired_by = [
+  "https://askubuntu.com/questions/799863/why-does-chmod-777-r-leave-the-system-unusable",
+  "https://unix.stackexchange.com/questions/12998/wrongly-set-chmod-777-problems",
+  "https://askubuntu.com/questions/20105/why-shouldnt-var-www-have-chmod-777",
+]
