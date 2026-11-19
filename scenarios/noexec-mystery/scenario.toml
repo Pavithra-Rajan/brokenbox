@@ -1,0 +1,19 @@
+title = "Noexec mystery: permission denied, even as root"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["disk"]
+description = """
+/opt/tools/backup.sh is owned by root, has mode 755 and looks fine, but
+running it (even as root) fails with "Permission denied".
+
+Make it runnable directly as /opt/tools/backup.sh, in a way that survives a
+reboot. Leave the script where it is.
+"""
+test = "Running /opt/tools/backup.sh as root succeeds, and /opt/tools is mounted (now and at boot) in a way that allows that."
+inspired_by = [
+  "https://superuser.com/questions/728127/what-does-noexec-flag-mean-when-mounting-directories-on-rhel",
+  "https://unix.stackexchange.com/questions/490402/executing-a-bash-script-or-a-c-binary-on-a-file-system-with-noexec-option",
+  "https://unix.stackexchange.com/questions/37980/partition-mounted-noexec-even-though-not-specified-in-etc-fstab",
+  "https://unix.stackexchange.com/questions/322523/etcd-executable-gets-permission-denied-as-root",
+]
