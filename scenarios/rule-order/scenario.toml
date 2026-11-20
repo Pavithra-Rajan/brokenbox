@@ -1,0 +1,19 @@
+title = "Rule order: I added an ACCEPT rule and it's still blocked"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["network", "firewall"]
+description = """
+Prometheus needs to scrape this box on port 9090. A colleague ran
+`iptables -A INPUT -p tcp --dport 9090 -j ACCEPT`, but connections to 9090
+are still refused.
+
+Open port 9090. Every other port from 9000 to 9999 must stay blocked (the
+admin UI on 9091 must not become reachable). Save the rules to
+/etc/iptables/rules.v4: that's what gets loaded at boot.
+"""
+test = "Port 9090 answers on the VM's network address, 9091 is still rejected, and /etc/iptables/rules.v4 has the fix."
+inspired_by = [
+  "https://serverfault.com/questions/79453/why-cant-i-access-my-couchdb-instance-externally-on-ubuntu-9-04-server",
+  "https://superuser.com/questions/360094/how-can-i-check-if-an-iptables-rule-already-exists",
+]
