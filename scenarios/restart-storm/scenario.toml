@@ -1,0 +1,19 @@
+title = "Restart storm: start request repeated too quickly"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["systemd"]
+description = """
+The worker service is down. Every time someone starts it, it restarts a
+few times in a row and then systemd gives up: the journal says
+"Start request repeated too quickly".
+
+Get it running and keep it running. Its settings live in
+/etc/worker/worker.env, and the worker must pick up the queue configured
+there.
+"""
+test = "worker is active, hasn't restarted for 15 seconds, and is using the queue from /etc/worker/worker.env."
+inspired_by = [
+  "https://askubuntu.com/questions/1089310/how-to-resolve-service-start-limit-hit",
+  "https://unix.stackexchange.com/questions/289629/systemd-restart-always-is-not-honored",
+]
