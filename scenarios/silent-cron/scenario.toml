@@ -1,0 +1,18 @@
+title = "Silent cron: the report never arrives"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 15
+tags = ["cron"]
+description = """
+A job in admin's crontab should rebuild /var/reports/latest.txt every
+minute. When admin runs the command by hand it works, but the file never
+appears.
+
+Fix the cron job. It must stay a job in admin's crontab.
+"""
+test = "Within about a minute, cron (as admin) writes today's report to /var/reports/latest.txt."
+inspired_by = [
+  "https://askubuntu.com/questions/222512/cron-info-no-mta-installed-discarding-output-error-in-the-syslog",
+  "https://serverfault.com/questions/85893/running-a-cron-job-manually-and-immediately",
+  "https://askubuntu.com/questions/419548/how-to-set-up-a-root-cron-job-properly",
+]
