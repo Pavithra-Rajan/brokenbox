@@ -1,0 +1,19 @@
+title = "Socket 502: Bad Gateway from a healthy app"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["web", "nginx"]
+description = """
+nginx returns 502 Bad Gateway for http://localhost/, but
+`systemctl status app` says the app is active (running).
+
+Make http://localhost/ show the app again. The app must keep running as its
+own `app` user, not root.
+"""
+test = "http://localhost/ returns 200 with the app's page, served through nginx, and the app runs as `app`."
+inspired_by = [
+  "https://serverfault.com/questions/543999/104-connection-reset-by-peer-while-reading-response-header-from-upstream-nginx",
+  "https://serverfault.com/questions/316157/how-do-i-configure-nginx-proxy-pass-node-js-http-server-via-unix-socket",
+  "https://serverfault.com/questions/588701/sharing-unix-socket-via-docker-volume-permission-denied",
+  "https://serverfault.com/questions/433024/how-can-i-debug-nginx-further-than-the-error-log",
+]
