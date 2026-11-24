@@ -1,0 +1,19 @@
+title = "TLS chain: works in my browser, fails with curl"
+difficulty = "medium"
+kind = "Fix"
+time_minutes = 15
+tags = ["web", "tls"]
+description = """
+https://shop.internal works in the team's browsers, but
+`curl --cacert /etc/ssl/shop-root.pem https://shop.internal` fails with
+"unable to get local issuer certificate", and so do the API clients.
+
+The certificate files the CA sent are in /etc/nginx/tls/. Fix the server,
+not the clients.
+"""
+test = "`curl --cacert /etc/ssl/shop-root.pem https://shop.internal` succeeds."
+inspired_by = [
+  "https://serverfault.com/questions/676070/is-this-ssl-certificate-chain-broken-and-how-to-fix-it",
+  "https://serverfault.com/questions/623068/haproxy-and-intermediate-ssl-certificate-issue",
+  "https://serverfault.com/questions/659099/have-i-referenced-my-websites-ssl-certificate-chain-correctly",
+]
