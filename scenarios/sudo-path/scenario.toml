@@ -1,0 +1,17 @@
+title = "sudo: command not found"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 10
+tags = ["access"]
+description = """
+The deploy tool works for admin: `deployctl --version` runs fine. But
+`sudo deployctl status` says "command not found".
+
+Make `sudo deployctl ...` work for admin without typing the full path.
+"""
+test = "As admin, `sudo deployctl --version` and `sudo deployctl status` both work."
+inspired_by = [
+  "https://unix.stackexchange.com/questions/83191/how-to-make-sudo-preserve-path",
+  "https://superuser.com/questions/709515/command-not-found-when-using-sudo",
+  "https://askubuntu.com/questions/452488/the-command-could-not-be-located-because-usr-bin-is-not-included-in-the-path",
+]

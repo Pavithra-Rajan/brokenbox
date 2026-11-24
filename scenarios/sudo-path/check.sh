@@ -1,0 +1,5 @@
+[ "$(stat -c %a /opt/deploy/bin)" -le 755 ] && ! find /opt/deploy -perm -o+w | grep -q . || fail "/opt/deploy is world-writable now, which would let anyone run code as root"
+v=$(runuser -l admin -c 'sudo -n deployctl --version' 2>&1) || fail "as admin, 'sudo deployctl --version' fails: $v"
+s=$(runuser -l admin -c 'sudo -n deployctl status' 2>&1) || fail "as admin, 'sudo deployctl status' fails: $s"
+[ "$s" = "release-$TOKEN" ] || fail "'sudo deployctl status' didn't print the current release: $s"
+pass "sudo deployctl works"
