@@ -1,0 +1,18 @@
+title = "Zombie horde: hundreds of undead processes"
+difficulty = "easy"
+kind = "Fix"
+time_minutes = 15
+tags = ["processes"]
+description = """
+Monitoring says this box has hundreds of zombie processes, and the count
+keeps climbing. `kill -9` on them does nothing.
+
+Get rid of them and stop new ones from appearing. The job queue (jobq) still
+has to keep running jobs: fix it, don't just switch it off.
+"""
+test = "No zombie processes for 15 seconds, and jobq is active and still finishing jobs."
+inspired_by = [
+  "https://askubuntu.com/questions/111422/how-to-find-zombie-process",
+  "https://askubuntu.com/questions/48624/what-are-zombie-processes",
+  "https://serverfault.com/questions/390202/ubuntu-displays-there-is-1-zombie-process-upon-login",
+]
