@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>brokenbox</title>
+<meta name="description" content="Break-and-fix Linux troubleshooting labs in disposable local KVM virtual machines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script>
+  // Apply saved/system theme before paint to avoid a flash.
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("bb-theme"); } catch (e) {}
+    if (!t) t = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="logo">brokenbox<span class="cursor">_</span></div>
+      <div class="tag">break-and-fix linux labs // local KVM // no cloud, no account</div>
+    </div>
+    <button class="toggle" id="theme" type="button" aria-label="Toggle light and dark mode">
+      <span class="led"></span><span id="theme-label">DARK</span>
+    </button>
+  </header>
+
+  <figure class="pc" id="pc" data-state="bad" role="img"
+          aria-label="Animation: a retro desktop computer's terminal runs top, finds a runaway logspam process, kills it with kill -9, and brokenbox check reports the server healthy.">
+    <div class="pc-box">
+      <svg viewBox="0 0 800 560" aria-hidden="true">
+        <!-- monitor -->
+        <rect class="o" x="150" y="16" width="500" height="372" rx="20"/>
+        <rect class="o thin" x="170" y="36" width="460" height="310" rx="13"/>
+        <rect class="screen" x="180" y="46" width="440" height="290" rx="8"/>
+        <text class="brand" x="186" y="374">brokenbox</text>
+        <line class="o thin" x1="520" y1="368" x2="548" y2="368"/>
+        <line class="o thin" x1="556" y1="368" x2="584" y2="368"/>
+        <circle class="o thin" cx="612" cy="368" r="7"/>
+        <!-- neck -->
+        <path class="o" d="M345 388 L325 408 H475 L455 388"/>
+        <!-- system unit -->
+        <rect class="o" x="100" y="408" width="600" height="70" rx="8"/>
+        <rect class="o thin" x="130" y="426" width="160" height="12" rx="2"/>
+        <line class="o thin" x1="130" y1="455" x2="210" y2="455"/>
+        <g class="o thin">
+          <line x1="460" y1="424" x2="460" y2="462"/><line x1="474" y1="424" x2="474" y2="462"/>
+          <line x1="488" y1="424" x2="488" y2="462"/><line x1="502" y1="424" x2="502" y2="462"/>
+          <line x1="516" y1="424" x2="516" y2="462"/><line x1="530" y1="424" x2="530" y2="462"/>
+          <line x1="544" y1="424" x2="544" y2="462"/><line x1="558" y1="424" x2="558" y2="462"/>
+        </g>
+        <circle class="led" cx="655" cy="443" r="8"/>
+        <text class="brand" x="611" y="449" style="font-size:15px">PWR</text>
+        <!-- keyboard -->
+        <path class="o" d="M140 498 H660 L690 550 H110 Z"/>
+        <g class="o thin" stroke-dasharray="16 6">
+          <line x1="160" y1="510" x2="640" y2="510"/>
+          <line x1="152" y1="522" x2="648" y2="522"/>
+          <line x1="144" y1="534" x2="656" y2="534"/>
+        </g>
+        <rect class="o thin" x="300" y="540" width="200" height="5" rx="2"/>
+      </svg>
+      <div class="term"><div class="term-in" id="term"></div></div>
+    </div>
+    <figcaption class="pc-status">● <b id="pc-status">load 7.82 · DEGRADED</b></figcaption>
+  </figure>
+
+  <nav role="tablist" aria-label="Sections">
+    <button role="tab" id="t-about" aria-controls="about" aria-selected="true">What is this</button>
+    <button role="tab" id="t-install" aria-controls="install" aria-selected="false" tabindex="-1">Installation</button>
+    <button role="tab" id="t-scen" aria-controls="scenarios" aria-selected="false" tabindex="-1">Scenarios</button>
+  </nav>
+
+  <!-- WHAT IS THIS -->
+  <section role="tabpanel" id="about" aria-labelledby="t-about">
+    <h2>A server is broken. Go fix it.</h2>
+    <p><strong>brokenbox</strong> gives you hands-on Linux troubleshooting practice on your own machine.
+      Each scenario boots a fresh, disposable virtual machine, a setup script quietly breaks something,
+      and you SSH in to find and fix it. When you think you're done, <code>brokenbox check</code> tells you if you solved it.</p>
+    <p>Everything runs locally with KVM and libvirt. There's no account and no cloud, and it doesn't cost anything.</p>
+
+    <div class="grid">
+      <div class="card"><b>[ boot ]</b><span>A copy-on-write VM is cloned from a golden image in seconds.</span></div>
+      <div class="card"><b>[ break ]</b><span>A hidden setup script runs as root and breaks something.</span></div>
+      <div class="card"><b>[ fix ]</b><span>You SSH in as <code>admin</code> and work out what went wrong.</span></div>
+      <div class="card"><b>[ check ]</b><span>A checker on the host verifies your fix and records your time.</span></div>
+    </div>
+
+    <h3>No peeking</h3>
+    <p>Setup and check scripts are piped to the VM over SSH stdin and never written to its disk.
+      Expected answers stay on the host and are generated for each run, so you can't find the solution
+      by grepping the box.</p>
+
+    <h3>Reset anytime</h3>
+    <p>Right after setup, brokenbox takes a memory-and-disk snapshot. If you make things worse,
+      <code>brokenbox reset</code> puts the box back to its freshly broken state instantly.</p>
+
+    <h3>Under the hood</h3>
+<pre><code>debian-12-genericcloud.qcow2        <span class="c"># downloaded once, checksum-verified</span>
+  └─ brokenbox-golden.qcow2          <span class="c"># tools installed, services disabled</span>
+       └─ brokenbox-&lt;scenario&gt;.qcow2 <span class="c"># copy-on-write overlay per scenario</span></code></pre>
+  </section>
+
+  <!-- INSTALLATION -->
+  <section role="tabpanel" id="install" aria-labelledby="t-install" hidden>
+    <h2>Installation</h2>
+    <p>You need Linux with hardware virtualisation (<code>/dev/kvm</code>) and Python 3.11 or newer.
+      brokenbox only uses the Python standard library.</p>
+
+    <ol class="steps">
+      <li>
+        <strong>Install the host packages</strong> (Debian / Ubuntu)
+<pre><code><span class="p">$ </span>sudo apt install qemu-kvm libvirt-daemon-system virtinst xorriso</code></pre>
+        You also need <code>virsh</code>, <code>virt-install</code>, <code>ssh</code> and <code>curl</code>.
+        libvirt should have its <code>default</code> storage pool and network.
+      </li>
+      <li>
+        <strong>Join the libvirt and kvm groups</strong>
+<pre><code><span class="p">$ </span>sudo usermod -aG libvirt,kvm $USER
+<span class="c"># log out and back in for this to take effect</span></code></pre>
+      </li>
+      <li>
+        <strong>Get brokenbox</strong>
+<pre><code><span class="p">$ </span>git clone &lt;repo-url&gt; brokenbox &amp;&amp; cd brokenbox
+<span class="p">$ </span>ln -s "$PWD/brokenbox-cli" ~/.local/bin/brokenbox   <span class="c"># run it as `brokenbox` from anywhere</span></code></pre>
+        The link points at your checkout, so changes apply immediately; re-create it if you move the repo.
+        Without it, use <code>./brokenbox-cli</code> in place of <code>brokenbox</code>.
+        (<code>pip install -e .</code> also works, but Debian and Ubuntu block it for the system Python, so use
+        <code>pipx install -e .</code> or a virtualenv there.)
+      </li>
+      <li>
+        <strong>Check your setup</strong>
+<pre><code><span class="p">$ </span>brokenbox doctor</code></pre>
+      </li>
+      <li>
+        <strong>Build the base image</strong> (one-time, about 5 minutes)
+<pre><code><span class="p">$ </span>brokenbox build-base</code></pre>
+        This downloads the Debian 12 cloud image and bakes a golden image with the tools pre-installed.
+        Disks go in libvirt's pool (<code>/var/lib/libvirt/images</code>), so this step doesn't need sudo.
+      </li>
+      <li>
+        <strong>Play</strong>
+<pre><code><span class="p">$ </span>brokenbox list
+<span class="p">$ </span>brokenbox start &lt;id&gt;
+<span class="p">$ </span>brokenbox ssh &lt;id&gt;
+<span class="p">$ </span>brokenbox check &lt;id&gt;
+<span class="p">$ </span>brokenbox destroy &lt;id&gt;</code></pre>
+      </li>
+    </ol>
+
+    <h3>Command reference</h3>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>doctor</code></td><td>Check host prerequisites</td></tr>
+        <tr><td><code>build-base [--rebuild]</code></td><td>Build the golden image</td></tr>
+        <tr><td><code>list</code> / <code>status</code></td><td>List scenarios (with best times) / running VMs</td></tr>
+        <tr><td><code>progress [--clear]</code></td><td>Solved count, best times, attempts</td></tr>
+        <tr><td><code>describe &lt;id&gt;</code></td><td>Print the problem statement</td></tr>
+        <tr><td><code>start &lt;id&gt; [--force]</code></td><td>Create the VM, break it, snapshot it</td></tr>
+        <tr><td><code>ssh &lt;id&gt;</code></td><td>Log in as <code>admin</code></td></tr>
+        <tr><td><code>check &lt;id&gt;</code></td><td>Run the checker</td></tr>
+        <tr><td><code>reset &lt;id&gt;</code></td><td>Revert to the freshly broken snapshot</td></tr>
+        <tr><td><code>stop</code> / <code>console &lt;id&gt;</code></td><td>Shut down (keep the disk) / attach the serial console</td></tr>
+        <tr><td><code>destroy &lt;id&gt; | --all</code></td><td>Delete the VM and its disk</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <!-- SCENARIOS -->
+  <section role="tabpanel" id="scenarios" aria-labelledby="t-scen" hidden>
+    <h2>Scenarios</h2>
+    <p>Each scenario is based on a problem people keep running into on real servers. The forum questions that
+      inspired it are listed in its <code>scenario.toml</code>. Run <code>brokenbox describe &lt;id&gt;</code> for the full brief.</p>
+
+    <div class="filters" role="group" aria-label="Filter scenarios">
+      <button class="on" data-f="all">all</button>
+      <button data-f="easy">easy</button>
+      <button data-f="medium">medium</button>
+      <button data-f="disk">disk</button>
+      <button data-f="systemd">systemd</button>
+      <button data-f="network">network</button>
+      <button data-f="web">web</button>
+    </div>
+
+    <div class="table-wrap">
+    <table id="scen-table">
+      <thead><tr><th>ID</th><th>Challenge</th><th>Level</th><th>Area</th><th>Time</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    </div>
+
+    <h3>Write your own</h3>
+<pre><code>scenarios/my-scenario/
+  scenario.toml   <span class="c"># title, difficulty, kind, time_minutes, sudo, memory, description</span>
+  setup.sh        <span class="c"># runs as root; break things here</span>
+  check.sh        <span class="c"># runs as root; exit 0 = solved</span></code></pre>
+    <p><code>setup.sh</code> can call <code>expect KEY value</code> to save an answer on the host, which
+      <code>check.sh</code> then reads as <code>$KEY</code>. Inside <code>check.sh</code>, use
+      <code>pass "msg"</code> or <code>fail "msg"</code>. Set <code>sudo = false</code> to drop the player's sudo rights after setup.</p>
+  </section>
+
+  <footer>brokenbox // break things responsibly</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
