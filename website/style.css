@@ -71,6 +71,12 @@ header { padding: 32px 0 8px; display: flex; align-items: center; justify-conten
   display: inline-flex; align-items: center; gap: 8px;
 }
 .toggle:hover { border-color: var(--ink); }
+.actions { display: flex; align-items: stretch; gap: 8px; }
+.gh {
+  display: inline-flex; align-items: center; justify-content: center; padding: 0 9px;
+  color: var(--ink); background: var(--panel); border: 1px solid var(--border);
+}
+.gh:hover { border-color: var(--ink); color: var(--ink-bright); }
 .led { width: 9px; height: 9px; background: var(--signal); box-shadow: 0 0 8px var(--signal); }
 :root[data-theme="light"] .led { background: var(--amber); box-shadow: none; }
 
