@@ -1,4 +1,6 @@
-# brokenbox
+<p align="center">
+  <img src="assets/brokenbox.gif" alt="brokenbox" width="640">
+</p>
 
 [![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776AB.svg?logo=python&logoColor=white)](https://www.python.org/downloads/)
