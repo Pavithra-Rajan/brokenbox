@@ -131,7 +131,8 @@ header { padding: 32px 0 8px; display: flex; align-items: center; justify-conten
 .pc[data-state="warn"] .pc-status b { color: var(--amber); }
 .pc[data-state="ok"] .pc-status b { color: var(--signal); }
 
-nav[role="tablist"] { display: flex; border-bottom: 1px solid var(--border); gap: 4px; overflow-x: auto; }
+nav[role="tablist"] { display: flex; border-bottom: 1px solid var(--border); gap: 4px; overflow-x: auto; scrollbar-width: none; }
+nav[role="tablist"]::-webkit-scrollbar { display: none; }
 nav button {
   font: 22px/1 VT323, monospace; color: var(--ink-dim); background: transparent;
   border: 1px solid transparent; border-bottom: none; padding: 10px 16px 8px; cursor: pointer;
