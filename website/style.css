@@ -201,6 +201,7 @@ td code { white-space: nowrap; }
 .note { border: 1px dashed var(--amber); color: var(--amber); padding: 10px 12px; font-size: 13px; margin: 14px 0; }
 
 footer { color: var(--ink-dim); font-size: 12px; padding: 0 0 40px; text-align: center; }
+footer a { color: inherit; }
 
 @media (max-width: 560px) {
   .logo { font-size: 38px; }
